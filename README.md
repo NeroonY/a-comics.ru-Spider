@@ -1,4 +1,4 @@
-a-comics.ru-Spyder
+a-comics.ru-Spider
 ==================
 
 Batch downloading web-comics from www.a-comics.ru.
