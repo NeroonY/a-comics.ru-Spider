@@ -5,7 +5,6 @@
 import urllib
 import os
 import leaf
-import html2text
 import logging
 
 # logging.basicConfig(level = logging.DEBUG)
@@ -13,7 +12,6 @@ import logging
 buffer_file_name = './data/comic_page.htm'
 result_file_name = 'results.txt'
 save_folder = "./Saved"
-html2text.BODY_WIDTH = 0
 
 # buffering = True #for debug only
 buffering = False
