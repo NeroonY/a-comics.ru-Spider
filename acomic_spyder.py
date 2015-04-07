@@ -17,6 +17,10 @@ save_folder = "./Saved"
 buffering = False
 skip_doubles = True #skip already downloaded
 
+def GetDomain(url):
+	parts = url.split('//', 1)
+	return parts[0]+'//'+parts[1].split('/', 1)[0]
+
 def LoadPage(page_url):
 	if buffering and os.path.exists(buffer_file_name):
 		logging.info( u'Used saved page')
@@ -40,10 +44,12 @@ def SaveImage(img_url, destination):
 	
 	urllib.urlretrieve(img_url, destination)
 
+#return local path
 def GetImageUrl(page):
 	doc = leaf.parse(page)
-	data = doc('.img-wrp img')
-	
+	data = doc('.issue img')
+	logging.info(data)
+
 	logging.info( 'Found img links' + str(len(data)))
 	
 
@@ -59,7 +65,7 @@ def ProcessPage(page_url, img_dist_name):
 
 	logging.info( 'Load ' + page_url)
 	page = LoadPage(page_url)
-	img_url = GetImageUrl(page)
+	img_url = GetDomain(page_url) + GetImageUrl(page)
 	SaveImage(img_url,img_dist_name)
 
 def PrepareSavePlace(folder_name):
@@ -82,7 +88,5 @@ def ProcessComicSubSite(page_url):
 	for i in xrange(1, last_index + 1):
 		ProcessPage(main_url + '/' + str(i), os.path.join(full_save_folder, img_name_mask % i))
 
-# ProcessPage('http://a-comics.ru/comics/cad/1930')
-#ProcessComicSubSite('http://a-comics.ru/comics/cad/1930')
-# ProcessComicSubSite('http://a-comics.ru/comics/yakutia/147')
-ProcessComicSubSite('http://a-comics.ru/comics/unsounded/110')
+#ProcessPage('http://acomics.ru/~arthas/3', 't.png')
+#ProcessComicSubSite('http://acomics.ru/~arthas/10')
