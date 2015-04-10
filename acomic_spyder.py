@@ -4,7 +4,7 @@
 
 import urllib
 import os
-import leaf
+import leaf, futures
 import logging
 
 # logging.basicConfig(level = logging.DEBUG)
@@ -84,9 +84,11 @@ def ProcessComicSubSite(page_url):
 	#доп нули для единобразия и правильной сортировки
 	img_name_mask = '%0' + str(len(str(last_index))) + 'd.jpg'
 
-
-	for i in xrange(1, last_index + 1):
-		ProcessPage(main_url + '/' + str(i), os.path.join(full_save_folder, img_name_mask % i))
+	with futures.ThreadPoolExecutor(max_workers=8) as pool:
+		for i in xrange(1, last_index + 1):
+			pool.submit(ProcessPage, \
+				main_url + '/' + str(i), \
+				os.path.join(full_save_folder, img_name_mask % i))
 
 #ProcessPage('http://acomics.ru/~arthas/3', 't.png')
-#ProcessComicSubSite('http://acomics.ru/~arthas/10')
+#ProcessComicSubSite('http://acomics.ru/~LwHG/20')
